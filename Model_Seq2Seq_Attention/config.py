@@ -1,5 +1,6 @@
 # config.py
 
+
 class Config(object):
     embed_size = 300
     hidden_layers = 1
@@ -10,4 +11,4 @@ class Config(object):
     lr = 0.5
     batch_size = 128
     dropout_keep = 0.8
-    max_sen_len = None # Sequence length for RNN
+    max_sen_len = None  # Sequence length for RNN
