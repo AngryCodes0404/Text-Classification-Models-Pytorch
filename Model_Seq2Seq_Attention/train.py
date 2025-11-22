@@ -8,20 +8,20 @@ import torch.optim as optim
 from torch import nn
 import torch
 
-if __name__=='__main__':
+if __name__ == "__main__":
     config = Config()
-    train_file = '../data/ag_news.train'
+    train_file = "../data/ag_news.train"
     if len(sys.argv) > 2:
         train_file = sys.argv[1]
-    test_file = '../data/ag_news.test'
+    test_file = "../data/ag_news.test"
     if len(sys.argv) > 3:
         test_file = sys.argv[2]
-    
-    w2v_file = '../data/glove.840B.300d.txt'
-    
+
+    w2v_file = "../data/glove.840B.300d.txt"
+
     dataset = Dataset(config)
     dataset.load_data(w2v_file, train_file, test_file)
-    
+
     # Create Model with specified optimizer and loss function
     ##############################################################
     model = Seq2SeqAttention(config, len(dataset.vocab), dataset.word_embeddings)
@@ -33,13 +33,15 @@ if __name__=='__main__':
     model.add_optimizer(optimizer)
     model.add_loss_op(NLLLoss)
     ##############################################################
-    
+
     train_losses = []
     val_accuracies = []
-    
+
     for i in range(config.max_epochs):
-        print ("Epoch: {}".format(i))
-        train_loss,val_accuracy = model.run_epoch(dataset.train_iterator, dataset.val_iterator, i)
+        print("Epoch: {}".format(i))
+        train_loss, val_accuracy = model.run_epoch(
+            dataset.train_iterator, dataset.val_iterator, i
+        )
         train_losses.append(train_loss)
         val_accuracies.append(val_accuracy)
 
@@ -47,6 +49,6 @@ if __name__=='__main__':
     val_acc = evaluate_model(model, dataset.val_iterator)
     test_acc = evaluate_model(model, dataset.test_iterator)
 
-    print ('Final Training Accuracy: {:.4f}'.format(train_acc))
-    print ('Final Validation Accuracy: {:.4f}'.format(val_acc))
-    print ('Final Test Accuracy: {:.4f}'.format(test_acc))
+    print("Final Training Accuracy: {:.4f}".format(train_acc))
+    print("Final Validation Accuracy: {:.4f}".format(val_acc))
+    print("Final Test Accuracy: {:.4f}".format(test_acc))
